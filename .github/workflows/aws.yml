@@ -50,3 +50,21 @@ jobs:
     - name: Run Deployment
       run: |
         python app.py
+
+      # ... (previous steps)
+    # ... (previous steps)
+    - name: Check AWS Elastic Beanstalk environment status
+      run: |
+        STATUS=$(aws elasticbeanstalk describe-environments --environment-names your-environment-name --query "Environments[0].Status" --output text)
+        if [ "$STATUS" == "Ready" ]; then
+          echo "Deployment successful. Environment is ready."
+        else
+          echo "Deployment failed. Environment status: $STATUS"
+          exit 1
+        fi
+
+    - name: Start Gunicorn server
+        run: |
+        gunicorn -b 0.0.0.0:5000 wsgi:app
+
+
