@@ -36,12 +36,12 @@ jobs:
 
     - name: Deploy to AWS Elastic Beanstalk
       run: |
-        eb init -p python-3.8 your-app-name
-        eb create your-environment-name
+        eb init -p python-3.8 app.py
+        eb create stage
 
     - name: Check AWS Elastic Beanstalk environment status
       run: |
-        STATUS=$(aws elasticbeanstalk describe-environments --environment-names your-environment-name --query "Environments[0].Status" --output text)
+        STATUS=$(aws elasticbeanstalk describe-environments --environment-names stage --query "Environments[0].Status" --output text)
         if [ "$STATUS" == "Ready" ]; then
           echo "Deployment successful. Environment is ready."
         else
